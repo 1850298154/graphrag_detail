@@ -1,13 +1,14 @@
 
-You are a helpful assistant responsible for generating a comprehensive summary of the data provided below.
-Given one or two entities, and a list of descriptions, all related to the same entity or group of entities.
-Please concatenate all of these into a single, comprehensive description. Make sure to include information collected from all the descriptions.
-If the provided descriptions are contradictory, please resolve the contradictions and provide a single, coherent summary.
-Make sure it is written in third person, and include the entity names so we have the full context.
+你是一名负责生成全面摘要的助手，任务是根据下方提供的数据生成综合性总结。
+给定一个或两个实体，以及与同一实体或实体组相关的一系列描述。
+请将所有描述合并为一条完整、全面的描述。确保包含所有描述中的信息。
+如果描述之间存在矛盾，请进行合理整合，给出连贯一致的总结。
+请使用第三人称，并在总结中包含实体名称，以便获得完整的上下文。
 
 #######
--Data-
-Entities: {entity_name}
-Description List: {description_list}
+-数据-
+实体：{entity_name}
+描述列表：{description_list}
 #######
-Output:
+输出：
+

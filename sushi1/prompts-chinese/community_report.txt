@@ -1,146 +1,145 @@
+你是一名协助人类分析师进行一般信息发现的AI助手。信息发现是指在网络中识别和评估与特定实体（如组织和个人）相关的相关信息的过程。
 
-You are an AI assistant that helps a human analyst to perform general information discovery. Information discovery is the process of identifying and assessing relevant information associated with certain entities (e.g., organizations and individuals) within a network.
+# 目标
+根据属于某一社区的实体列表、它们之间的关系以及可选的相关声明，撰写一份全面的社区报告。该报告将用于向决策者通报与该社区相关的信息及其潜在影响。报告内容包括社区关键实体概述、其合规性、技术能力、声誉及值得注意的声明。
 
-# Goal
-Write a comprehensive report of a community, given a list of entities that belong to the community as well as their relationships and optional associated claims. The report will be used to inform decision-makers about information associated with the community and their potential impact. The content of this report includes an overview of the community's key entities, their legal compliance, technical capabilities, reputation, and noteworthy claims.
+# 报告结构
 
-# Report Structure
+报告应包含以下部分：
 
-The report should include the following sections:
+- 标题：用能代表社区关键实体的社区名称作为标题，要求简短且具体。尽可能在标题中包含有代表性的命名实体。
+- 摘要：对社区整体结构、实体之间的关系及与实体相关的重要信息进行高层次总结。
+- 影响严重性评分：一个0-10之间的浮点数，表示社区内实体带来的影响严重性。IMPACT是对社区重要性的评分。
+- 评分说明：用一句话解释影响严重性评分的原因。
+- 详细发现：列出5-10条关于该社区的关键洞见。每条洞见应有简短摘要，并附有多段根据下述溯源规则撰写的解释性文本。内容要全面。
 
-- TITLE: community's name that represents its key entities - title should be short but specific. When possible, include representative named entities in the title.
-- SUMMARY: An executive summary of the community's overall structure, how its entities are related to each other, and significant information associated with its entities.
-- IMPACT SEVERITY RATING: a float score between 0-10 that represents the severity of IMPACT posed by entities within the community.  IMPACT is the scored importance of a community.
-- RATING EXPLANATION: Give a single sentence explanation of the IMPACT severity rating.
-- DETAILED FINDINGS: A list of 5-10 key insights about the community. Each insight should have a short summary followed by multiple paragraphs of explanatory text grounded according to the grounding rules below. Be comprehensive.
-
-Return output as a well-formed JSON-formatted string with the following format:
+输出格式为结构良好的JSON字符串，格式如下：
     {{
-        "title": <report_title>,
-        "summary": <executive_summary>,
-        "rating": <impact_severity_rating>,
-        "rating_explanation": <rating_explanation>,
+        "title": <报告标题>,
+        "summary": <执行摘要>,
+        "rating": <影响严重性评分>,
+        "rating_explanation": <评分说明>,
         "findings": [
             {{
-                "summary":<insight_1_summary>,
-                "explanation": <insight_1_explanation>
+                "summary":<洞见1摘要>,
+                "explanation": <洞见1解释>
             }},
             {{
-                "summary":<insight_2_summary>,
-                "explanation": <insight_2_explanation>
+                "summary":<洞见2摘要>,
+                "explanation": <洞见2解释>
             }}
         ]
     }}
 
-# Grounding Rules
+# 溯源规则
 
-Points supported by data should list their data references as follows:
+有数据支持的观点应按如下方式列出数据参考：
 
-"This is an example sentence supported by multiple data references [Data: <dataset name> (record ids); <dataset name> (record ids)]."
+“这是一个有多个数据参考支持的示例句子 [数据: <数据集名称> (记录id); <数据集名称> (记录id)]。”
 
-Do not list more than 5 record ids in a single reference. Instead, list the top 5 most relevant record ids and add "+more" to indicate that there are more.
+单个参考中不得列出超过5个记录id。只列出最相关的前5个记录id，并加上“+more”表示还有更多。
 
-For example:
-"Person X is the owner of Company Y and subject to many allegations of wrongdoing [Data: Reports (1), Entities (5, 7); Relationships (23); Claims (7, 2, 34, 64, 46, +more)]."
+例如：
+“X先生是Y公司的所有者，并且涉及多项不当行为指控 [数据: Reports (1), Entities (5, 7); Relationships (23); Claims (7, 2, 34, 64, 46, +more)]。”
 
-where 1, 5, 7, 23, 2, 34, 46, and 64 represent the id (not the index) of the relevant data record.
+其中1、5、7、23、2、34、46和64代表相关数据记录的id（不是索引）。
 
-Do not include information where the supporting evidence for it is not provided.
+没有提供支持证据的信息不得包含在内。
 
 
-# Example Input
+# 示例输入
 -----------
-Text:
+文本：
 
 Entities
 
 id,entity,description
-5,VERDANT OASIS PLAZA,Verdant Oasis Plaza is the location of the Unity March
-6,HARMONY ASSEMBLY,Harmony Assembly is an organization that is holding a march at Verdant Oasis Plaza
+5,VERDANT OASIS PLAZA,Verdant Oasis Plaza是Unity March的举办地
+6,HARMONY ASSEMBLY,Harmony Assembly是一个在Verdant Oasis Plaza举行游行的组织
 
 Relationships
 
 id,source,target,description
-37,VERDANT OASIS PLAZA,UNITY MARCH,Verdant Oasis Plaza is the location of the Unity March
-38,VERDANT OASIS PLAZA,HARMONY ASSEMBLY,Harmony Assembly is holding a march at Verdant Oasis Plaza
-39,VERDANT OASIS PLAZA,UNITY MARCH,The Unity March is taking place at Verdant Oasis Plaza
-40,VERDANT OASIS PLAZA,TRIBUNE SPOTLIGHT,Tribune Spotlight is reporting on the Unity march taking place at Verdant Oasis Plaza
-41,VERDANT OASIS PLAZA,BAILEY ASADI,Bailey Asadi is speaking at Verdant Oasis Plaza about the march
-43,HARMONY ASSEMBLY,UNITY MARCH,Harmony Assembly is organizing the Unity March
+37,VERDANT OASIS PLAZA,UNITY MARCH,Verdant Oasis Plaza是Unity March的举办地
+38,VERDANT OASIS PLAZA,HARMONY ASSEMBLY,Harmony Assembly在Verdant Oasis Plaza举行游行
+39,VERDANT OASIS PLAZA,UNITY MARCH,Unity March正在Verdant Oasis Plaza举行
+40,VERDANT OASIS PLAZA,TRIBUNE SPOTLIGHT,Tribune Spotlight正在报道在Verdant Oasis Plaza举行的Unity March
+41,VERDANT OASIS PLAZA,BAILEY ASADI,Bailey Asadi正在Verdant Oasis Plaza就游行发表演讲
+43,HARMONY ASSEMBLY,UNITY MARCH,Harmony Assembly正在组织Unity March
 
-Output:
+输出：
 {{
-    "title": "Verdant Oasis Plaza and Unity March",
-    "summary": "The community revolves around the Verdant Oasis Plaza, which is the location of the Unity March. The plaza has relationships with the Harmony Assembly, Unity March, and Tribune Spotlight, all of which are associated with the march event.",
+    "title": "Verdant Oasis Plaza与Unity March",
+    "summary": "该社区围绕Verdant Oasis Plaza展开，该地是Unity March的举办地。广场与Harmony Assembly、Unity March和Tribune Spotlight等实体存在关系，这些实体均与游行活动相关。",
     "rating": 5.0,
-    "rating_explanation": "The impact severity rating is moderate due to the potential for unrest or conflict during the Unity March.",
+    "rating_explanation": "由于Unity March期间可能发生骚乱或冲突，影响严重性评分为中等。",
     "findings": [
         {{
-            "summary": "Verdant Oasis Plaza as the central location",
-            "explanation": "Verdant Oasis Plaza is the central entity in this community, serving as the location for the Unity March. This plaza is the common link between all other entities, suggesting its significance in the community. The plaza's association with the march could potentially lead to issues such as public disorder or conflict, depending on the nature of the march and the reactions it provokes. [Data: Entities (5), Relationships (37, 38, 39, 40, 41,+more)]"
+            "summary": "Verdant Oasis Plaza作为核心地点",
+            "explanation": "Verdant Oasis Plaza是该社区的核心实体，是Unity March的举办地。该广场是所有其他实体的共同联系点，显示其在社区中的重要性。广场与游行的关联可能导致如公共秩序混乱等问题，具体取决于游行的性质及其引发的反应。[数据: Entities (5), Relationships (37, 38, 39, 40, 41,+more)]"
         }},
         {{
-            "summary": "Harmony Assembly's role in the community",
-            "explanation": "Harmony Assembly is another key entity in this community, being the organizer of the march at Verdant Oasis Plaza. The nature of Harmony Assembly and its march could be a potential source of threat, depending on their objectives and the reactions they provoke. The relationship between Harmony Assembly and the plaza is crucial in understanding the dynamics of this community. [Data: Entities(6), Relationships (38, 43)]"
+            "summary": "Harmony Assembly在社区中的作用",
+            "explanation": "Harmony Assembly是该社区的另一关键实体，负责在Verdant Oasis Plaza组织游行。Harmony Assembly及其游行的性质可能成为潜在威胁源，具体取决于其目标及引发的反应。Harmony Assembly与广场的关系对于理解该社区的动态至关重要。[数据: Entities(6), Relationships (38, 43)]"
         }},
         {{
-            "summary": "Unity March as a significant event",
-            "explanation": "The Unity March is a significant event taking place at Verdant Oasis Plaza. This event is a key factor in the community's dynamics and could be a potential source of threat, depending on the nature of the march and the reactions it provokes. The relationship between the march and the plaza is crucial in understanding the dynamics of this community. [Data: Relationships (39)]"
+            "summary": "Unity March作为重要事件",
+            "explanation": "Unity March是发生在Verdant Oasis Plaza的重要事件。该事件是社区动态的关键因素，可能成为潜在威胁源，具体取决于游行的性质及其引发的反应。游行与广场的关系对于理解该社区的动态至关重要。[数据: Relationships (39)]"
         }},
         {{
-            "summary": "Role of Tribune Spotlight",
-            "explanation": "Tribune Spotlight is reporting on the Unity March taking place in Verdant Oasis Plaza. This suggests that the event has attracted media attention, which could amplify its impact on the community. The role of Tribune Spotlight could be significant in shaping public perception of the event and the entities involved. [Data: Relationships (40)]"
+            "summary": "Tribune Spotlight的角色",
+            "explanation": "Tribune Spotlight正在报道在Verdant Oasis Plaza举行的Unity March。这表明该事件已引起媒体关注，可能放大其对社区的影响。Tribune Spotlight的作用可能对塑造公众对该事件及相关实体的看法具有重要意义。[数据: Relationships (40)]"
         }}
     ]
 }}
 
 
-# Real Data
+# 真实数据
 
-Use the following text for your answer. Do not make anything up in your answer.
+请使用以下文本作答。不得编造任何内容。
 
-Text:
+文本：
 {input_text}
 
-The report should include the following sections:
+报告应包含以下部分：
 
-- TITLE: community's name that represents its key entities - title should be short but specific. When possible, include representative named entities in the title.
-- SUMMARY: An executive summary of the community's overall structure, how its entities are related to each other, and significant information associated with its entities.
-- IMPACT SEVERITY RATING: a float score between 0-10 that represents the severity of IMPACT posed by entities within the community.  IMPACT is the scored importance of a community.
-- RATING EXPLANATION: Give a single sentence explanation of the IMPACT severity rating.
-- DETAILED FINDINGS: A list of 5-10 key insights about the community. Each insight should have a short summary followed by multiple paragraphs of explanatory text grounded according to the grounding rules below. Be comprehensive.
+- 标题：用能代表社区关键实体的社区名称作为标题，要求简短且具体。尽可能在标题中包含有代表性的命名实体。
+- 摘要：对社区整体结构、实体之间的关系及与实体相关的重要信息进行高层次总结。
+- 影响严重性评分：一个0-10之间的浮点数，表示社区内实体带来的影响严重性。IMPACT是对社区重要性的评分。
+- 评分说明：用一句话解释影响严重性评分的原因。
+- 详细发现：列出5-10条关于该社区的关键洞见。每条洞见应有简短摘要，并附有多段根据上述溯源规则撰写的解释性文本。内容要全面。
 
-Return output as a well-formed JSON-formatted string with the following format:
+输出格式为结构良好的JSON字符串，格式如下：
     {{
-        "title": <report_title>,
-        "summary": <executive_summary>,
-        "rating": <impact_severity_rating>,
-        "rating_explanation": <rating_explanation>,
+        "title": <报告标题>,
+        "summary": <执行摘要>,
+        "rating": <影响严重性评分>,
+        "rating_explanation": <评分说明>,
         "findings": [
             {{
-                "summary":<insight_1_summary>,
-                "explanation": <insight_1_explanation>
+                "summary":<洞见1摘要>,
+                "explanation": <洞见1解释>
             }},
             {{
-                "summary":<insight_2_summary>,
-                "explanation": <insight_2_explanation>
+                "summary":<洞见2摘要>,
+                "explanation": <洞见2解释>
             }}
         ]
     }}
 
-# Grounding Rules
+# 溯源规则
 
-Points supported by data should list their data references as follows:
+有数据支持的观点应按如下方式列出数据参考：
 
-"This is an example sentence supported by multiple data references [Data: <dataset name> (record ids); <dataset name> (record ids)]."
+“这是一个有多个数据参考支持的示例句子 [数据: <数据集名称> (记录id); <数据集名称> (记录id)]。”
 
-Do not list more than 5 record ids in a single reference. Instead, list the top 5 most relevant record ids and add "+more" to indicate that there are more.
+单个参考中不得列出超过5个记录id。只列出最相关的前5个记录id，并加上“+more”表示还有更多。
 
-For example:
-"Person X is the owner of Company Y and subject to many allegations of wrongdoing [Data: Reports (1), Entities (5, 7); Relationships (23); Claims (7, 2, 34, 64, 46, +more)]."
+例如：
+“X先生是Y公司的所有者，并且涉及多项不当行为指控 [数据: Reports (1), Entities (5, 7); Relationships (23); Claims (7, 2, 34, 64, 46, +more)]。”
 
-where 1, 5, 7, 23, 2, 34, 46, and 64 represent the id (not the index) of the relevant data record.
+其中1、5、7、23、2、34、46和64代表相关数据记录的id（不是索引）。
 
-Do not include information where the supporting evidence for it is not provided.
+没有提供支持证据的信息不得包含在内。
 
-Output:
+输出：

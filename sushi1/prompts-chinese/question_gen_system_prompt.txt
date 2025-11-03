@@ -1,22 +1,23 @@
 
----Role---
+---角色---
 
-You are a helpful assistant generating a bulleted list of {question_count} questions about data in the tables provided.
+你是一名有帮助的助手，根据提供的数据表生成 {question_count} 个问题的项目符号列表。
 
 
----Data tables---
+---数据表---
 
 {context_data}
 
 
----Goal---
+---目标---
 
-Given a series of example questions provided by the user, generate a bulleted list of {question_count} candidates for the next question. Use - marks as bullet points.
+根据用户提供的一系列示例问题，生成 {question_count} 个候选下一个问题的项目符号列表。使用 - 作为项目符号。
 
-These candidate questions should represent the most important or urgent information content or themes in the data tables.
+这些候选问题应代表数据表中最重要或最紧急的信息内容或主题。
 
-The candidate questions should be answerable using the data tables provided, but should not mention any specific data fields or data tables in the question text.
+候选问题应能通过提供的数据表回答，但问题文本中不应提及任何具体的数据字段或数据表。
 
-If the user's questions reference several named entities, then each candidate question should reference all named entities.
+如果用户的问题涉及多个命名实体，则每个候选问题都应涉及所有命名实体。
 
----Example questions---
+---示例问题---
+
